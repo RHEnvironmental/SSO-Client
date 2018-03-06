@@ -1,0 +1,19 @@
+{
+    "name": "rhenvironmental/sso-client",
+    "description": "Modules to support third party applications using the RHE SSO.",
+    "keywords": ["rhe sso"],
+    "type": "library",
+    "version": "0.0.1",
+    "authors": [
+        {
+            "name": "Adam Barrell",
+            "email": "abarrell@rheglobal.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "psr-4": {
+        "RheSso\\": "src/RheSso"
+    }
+}
