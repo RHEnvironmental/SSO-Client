@@ -3,7 +3,7 @@
     "description": "Modules to support third party applications using the RHE SSO.",
     "keywords": ["rhe sso"],
     "type": "library",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "authors": [
         {
             "name": "Adam Barrell",
@@ -11,7 +11,8 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "~6.3",
+        "jasny/sso": "~0.3.0"
     },
     "psr-4": {
         "RheSso\\": "src/RheSso"
