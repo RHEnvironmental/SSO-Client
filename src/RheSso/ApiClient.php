@@ -13,20 +13,20 @@ class ApiClient
      * @param $options array An associative array of options.
      *
      * $options = [
-     *  'service_id' => (integer) An identifier allowing the SSO server to uniquely identify the service application.
-     *  'broker_id' => (integer) An identifier allowing the SSO server to uniquely identify the broker application.
-     *  'broker_secret' => (string) Secret used to authenticate a trusted broker with the SSO server.
+     *  'service_id'        => (integer) An identifier allowing the SSO server to uniquely identify the service application.
+     *  'broker_id'         => (integer) An identifier allowing the SSO server to uniquely identify the broker application.
+     *  'broker_secret'     => (string) Secret used to authenticate a trusted broker with the SSO server.
      *  'base_api_endpoint' => (string) Base endpoint for the API e.g. https://ENVIRONMENT.sso.rheglobal.com/api.
      * ]
      */
     public function __construct($options)
     {
-        $options = $options + [
-            'service_id' => null,
-            'broker_id' => null,
-            'broker_secret' => null,
+        $options = array_merge($options, [
+            'service_id'        => null,
+            'broker_id'         => null,
+            'broker_secret'     => null,
             'base_api_endpoint' => null
-        ];
+        ]);
 
         $this->httpClient = new HttpClient(
             $options['broker_id'],
@@ -180,7 +180,7 @@ class ApiClient
     {
         $params = [
             'form_params' => [
-                'user_id' => $userId,
+                'user_id'      => $userId,
                 'licence_type' => $licenceType
             ]
         ];
