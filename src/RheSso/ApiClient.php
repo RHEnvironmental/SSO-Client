@@ -5,17 +5,36 @@ namespace RheSso;
 class ApiClient
 {
     private $httpClient;
+    private $serviceId;
 
     /**
      * Constructs a client used to execute functions on the SSO API.
      *
-     * @param $brokerId string The identifier allows the SSO server to uniquely identify the broker application.
-     * @param $brokerSecret string Secret used to authenticate a trusted broker with the SSO server.
-     * @param $baseApiEndpoint string Base endpoint for the API e.g. https://ENVIRONMENT.sso.rheglobal.com/api.
+     * @param $options array An associative array of options.
+     *
+     * $options = [
+     *  'service_id' => (integer) An identifier allowing the SSO server to uniquely identify the service application.
+     *  'broker_id' => (integer) An identifier allowing the SSO server to uniquely identify the broker application.
+     *  'broker_secret' => (string) Secret used to authenticate a trusted broker with the SSO server.
+     *  'base_api_endpoint' => (string) Base endpoint for the API e.g. https://ENVIRONMENT.sso.rheglobal.com/api.
+     * ]
      */
-    public function __construct($brokerId, $brokerSecret, $baseApiEndpoint)
+    public function __construct($options)
     {
-        $this->httpClient = new HttpClient($brokerId, $brokerSecret, $baseApiEndpoint);
+        $options = $options + [
+            'service_id' => null,
+            'broker_id' => null,
+            'broker_secret' => null,
+            'base_api_endpoint' => null
+        ];
+
+        $this->httpClient = new HttpClient(
+            $options['broker_id'],
+            $options['broker_secret'],
+            $options['base_api_endpoint']
+        );
+
+        $this->serviceId = $options['service_id'];
     }
 
     /**
@@ -87,5 +106,85 @@ class ApiClient
         $params = ['form_params' => $userDetails];
 
         return $this->httpClient->post('/users/import', $params)['payload'];
+    }
+
+    /**
+     * Allows a user to sign the terms of service licence.
+     *
+     * @param $userId integer SSO user ID for the user signing the licence.
+     *
+     * @return array Empty array, signing was successful if no exception was thrown.
+     */
+    public function signTermsOfServiceLicence($userId)
+    {
+        return $this->signLicence($userId, LicenceType::TERMS_OF_SERVICE);
+    }
+
+    /**
+     * Allows a user to sign the client licence.
+     *
+     * @param $userId integer SSO user ID for the user signing the licence.
+     *
+     * @return array Empty array, signing was successful if no exception was thrown.
+     */
+    public function signClientLicence($userId)
+    {
+        return $this->signLicence($userId, LicenceType::CLIENT_LICENCE);
+    }
+
+    /**
+     * Allows a user to sign the EULA licence.
+     *
+     * @param $userId integer SSO user ID for the user signing the licence.
+     *
+     * @return array Empty array, signing was successful if no exception was thrown.
+     */
+    public function signEulaLicence($userId)
+    {
+        return $this->signLicence($userId, LicenceType::EULA_LICENCE);
+    }
+
+    /**
+     * Allows a user to sign the contributions licence.
+     *
+     * @param $userId integer SSO user ID for the user signing the licence.
+     *
+     * @return array Empty array, signing was successful if no exception was thrown.
+     */
+    public function signContributionsLicence($userId)
+    {
+        return $this->signLicence($userId, LicenceType::CONTRIBUTIONS_LICENCE);
+    }
+
+    /**
+     * Allows a user to sign the reasonable use licence.
+     *
+     * @param $userId integer SSO user ID for the user signing the licence.
+     *
+     * @return array Empty array, signing was successful if no exception was thrown.
+     */
+    public function signReasonableUseLicence($userId)
+    {
+        return $this->signLicence($userId, LicenceType::REASONABLE_USE_LICENCE);
+    }
+
+    /**
+     * Allows a user to sign a licence.
+     *
+     * @param $licenceType string Type of licence to be signed (see possible type values).
+     * @param $userId integer ID of the user signing the licence.
+     *
+     * @return array Empty array, signing was successful if no exception was thrown.
+     */
+    private function signLicence($userId, $licenceType)
+    {
+        $params = [
+            'form_params' => [
+                'user_id' => $userId,
+                'licence_type' => $licenceType
+            ]
+        ];
+
+        return $this->httpClient->post('/sign-licence', $params)['payload'];
     }
 }
