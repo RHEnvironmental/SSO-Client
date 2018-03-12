@@ -21,12 +21,12 @@ class ApiClient
      */
     public function __construct($options)
     {
-        $options = array_merge($options, [
+        $options = array_merge([
             'service_id'        => null,
             'broker_id'         => null,
             'broker_secret'     => null,
             'base_api_endpoint' => null
-        ]);
+        ], $options);
 
         $this->httpClient = new HttpClient(
             $options['broker_id'],
