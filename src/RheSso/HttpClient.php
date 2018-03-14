@@ -32,7 +32,7 @@ class HttpClient
      * Sends GET requests to the SSO server.
      *
      * @param $path string Path of the API endpoint e.g. /users/2
-     * @param $options array Associative array of options.
+     * @param $options array Associative array of request data.
      *
      * @return array Associative array containing response data.
      */
@@ -45,12 +45,27 @@ class HttpClient
      * Sends POST requests to the SSO server.
      *
      * @param $path string Path of the API endpoint e.g. /users/2
-     * @param $options array Associative array of options.
+     * @param $options array Associative array of request data.
      *
      * @return array Associative array containing response data.
      */
     public function post($path, array $options = [])
     {
+        return $this->request('post', $path, $options);
+    }
+
+    /**
+     * Sends PUT requests to the SSO server.
+     *
+     * @param $path string Path of the API endpoint e.g. /users/2
+     * @param $options array Associative array of request data.
+     *
+     * @return array Associative array containing response data.
+     */
+    public function put($path, array $options = [])
+    {
+        $options = array_merge(['_method' => 'put'], $options);
+
         return $this->request('post', $path, $options);
     }
 

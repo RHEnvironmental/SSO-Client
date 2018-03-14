@@ -99,13 +99,28 @@ class ApiClient
      *
      * @param $userDetails array Details of the user to be seeded into the SSO user database.
      *
-     * @return array Details of the successfully user, including their SSO ID.
+     * @return array Details of the seeded user, including their SSO ID.
      */
     public function seedSsoUser(array $userDetails)
     {
         $params = ['form_params' => $userDetails];
 
         return $this->httpClient->post('/users/import', $params)['payload'];
+    }
+
+    /**
+     * Updates an existing SSO user.
+     *
+     * @param $userId integer ID of the SSO user.
+     * @param $userDetails array Associative array of user details to update.
+     *
+     * @return array Associative array of updated user details.
+     */
+    public function updateUser($userId, array $userDetails)
+    {
+        $params = ['form_params' => $userDetails];
+
+        return $this->httpClient->put('/users/' . $userId, $params)['payload'];
     }
 
     /**
