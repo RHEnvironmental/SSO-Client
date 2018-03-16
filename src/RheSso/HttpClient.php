@@ -102,7 +102,7 @@ class HttpClient
 
                 $errors = json_decode($e->getResponse()->getBody()->getContents(), true)['payload'];
 
-                throw new SsoValidationException($errors);
+                throw new SsoValidationException($errors, $e);
             }
 
             throw $e;
