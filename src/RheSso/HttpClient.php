@@ -49,8 +49,6 @@ class HttpClient
      * @param $options array Associative array of request data.
      *
      * @return array Associative array containing response data.
-     *
-     * @throws SsoValidationException If the request data fails validation.
      */
     public function post($path, array $options = [])
     {
@@ -64,8 +62,6 @@ class HttpClient
      * @param $options array Associative array of request data.
      *
      * @return array Associative array containing response data.
-     *
-     * @throws SsoValidationException If the request data fails validation.
      */
     public function put($path, array $options = [])
     {
@@ -82,8 +78,6 @@ class HttpClient
      * @param $options array Associative array of options.
      *
      * @return array Associative array containing response data.
-     *
-     * @throws SsoValidationException If the request data fails validation.
      */
     private function request($method, $path, array $options = [])
     {

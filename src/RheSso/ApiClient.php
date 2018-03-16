@@ -56,6 +56,8 @@ class ApiClient
      * @param $options array Options used to control the behaviour of the registration.
      *
      * @return array User details that were registered.
+     *
+     * @throws SsoValidationException If the request data fails validation.
      */
     public function register(array $userDetails, array $options = [])
     {
@@ -120,6 +122,8 @@ class ApiClient
      * @param $userDetails array Associative array of user details to update.
      *
      * @return array Associative array of updated user details.
+     *
+     * @throws SsoValidationException If the request data fails validation.
      */
     public function updateUser($userId, array $userDetails)
     {
