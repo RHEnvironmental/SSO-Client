@@ -3,6 +3,7 @@
 namespace RheSso;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class HttpClient
 {
@@ -48,6 +49,8 @@ class HttpClient
      * @param $options array Associative array of request data.
      *
      * @return array Associative array containing response data.
+     *
+     * @throws SsoValidationException If the request data fails validation.
      */
     public function post($path, array $options = [])
     {
@@ -61,6 +64,8 @@ class HttpClient
      * @param $options array Associative array of request data.
      *
      * @return array Associative array containing response data.
+     *
+     * @throws SsoValidationException If the request data fails validation.
      */
     public function put($path, array $options = [])
     {
@@ -77,6 +82,8 @@ class HttpClient
      * @param $options array Associative array of options.
      *
      * @return array Associative array containing response data.
+     *
+     * @throws SsoValidationException If the request data fails validation.
      */
     private function request($method, $path, array $options = [])
     {
@@ -89,8 +96,22 @@ class HttpClient
             ]
         ], $options);
 
-        $response = $this->httpClient->$method($endpoint, $options);
+        try {
 
-        return json_decode($response->getBody()->getContents(), true);
+            $response = $this->httpClient->$method($endpoint, $options);
+
+            return json_decode($response->getBody()->getContents(), true);
+
+        } catch (ClientException $e) {
+
+            if ($e->getResponse()->getStatusCode() === 422) {
+
+                $errors = json_decode($e->getResponse()->getBody()->getContents(), true)['payload'];
+
+                throw new SsoValidationException($errors);
+            }
+
+            throw $e;
+        }
     }
 }
