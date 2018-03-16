@@ -12,7 +12,7 @@ class SsoValidationException extends Exception
     public function __construct(array $errors, Throwable $previousError = null)
     {
         parent::__construct(
-            'Request data sent to the RHE SSO API did not pass validation rules.',
+            'Request data sent to the RHE SSO API did not pass validation rules. Errors: ' . json_encode($errors),
             0,
             $previousError
         );
