@@ -59,6 +59,11 @@ class ApiClient
      */
     public function register(array $userDetails, array $options = [])
     {
+        if (isset($userDetails['password']) && trim($userDetails['password']) === '') {
+
+            unset($userDetails['password']);
+        }
+
         $options = ['form_params' => array_merge($userDetails, ['options' => $options])];
 
         return $this->httpClient->post('/users', $options)['payload'];
