@@ -65,7 +65,7 @@ class HttpClient
      */
     public function put($path, array $options = [])
     {
-        $options = array_merge(['_method' => 'put'], $options);
+        $options = array_merge_recursive(['form_params' => ['_method' => 'put']], $options);
 
         return $this->request('post', $path, $options);
     }
