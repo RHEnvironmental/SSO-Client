@@ -133,6 +133,19 @@ class ApiClient
     }
 
     /**
+     * Detaches an SSO user from the service calling the endpoint.
+     * The SSO user will be deleted if it is their last remaining service.
+     *
+     * @param $userId integer ID of the SSO user.
+     *
+     * @return array A 200 OK status indicates a successful detachment.
+     */
+    public function detachUser($userId)
+    {
+        return $this->httpClient->delete('/users/' . $userId)['payload'];
+    }
+
+    /**
      * Allows a user to sign the terms of service licence.
      *
      * @param $userId integer SSO user ID for the user signing the licence.
