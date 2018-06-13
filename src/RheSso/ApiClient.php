@@ -133,6 +133,18 @@ class ApiClient
     }
 
     /**
+     * Attaches an SSO user to the service calling the endpoint.
+     *
+     * @param $userId integer ID of the SSO user.
+     *
+     * @return array A 200 OK status indicates a successful attachment.
+     */
+    public function attachUser($userId)
+    {
+        return $this->httpClient->post('/users/' . $userId . '/attach')['payload'];
+    }
+
+    /**
      * Detaches an SSO user from the service calling the endpoint.
      * The SSO user will be deleted if it is their last remaining service.
      *
