@@ -157,6 +157,17 @@ class ApiClient
         return $this->httpClient->delete('/users/' . $userId)['payload'];
     }
 
+    public function detachUsers($userIds)
+    {
+        $params = [
+            'form_params' => [
+                'user_ids' => $userIds
+            ]
+        ];
+
+        return $this->httpClient->delete('/batch-users/', $params)['payload'];
+    }
+
     /**
      * Allows a user to sign the terms of service licence.
      *

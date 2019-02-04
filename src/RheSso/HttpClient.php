@@ -74,12 +74,13 @@ class HttpClient
      * Sends DELETE requests to the SSO server.
      *
      * @param $path string Path of the API endpoint e.g. /users/2
+     * @param $options
      *
      * @return array Associative array containing response data.
      */
-    public function delete($path)
+    public function delete($path, $options = [])
     {
-        return $this->request('delete', $path);
+        return $this->request('delete', $path, $options);
     }
 
     /**
