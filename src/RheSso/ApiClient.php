@@ -157,6 +157,14 @@ class ApiClient
         return $this->httpClient->delete('/users/' . $userId)['payload'];
     }
 
+    /**
+     * Detaches a batch of users from the service calling the endpoint.
+     * SSO users will be deleted if it is their last remaining service.
+     *
+     * @param $userIds integer IDs of the SSO users.
+     *
+     * @return array A 200 OK status indicates a successful detachment.
+     */
     public function detachUsers($userIds)
     {
         $params = [
@@ -166,6 +174,19 @@ class ApiClient
         ];
 
         return $this->httpClient->delete('/batch-users/', $params)['payload'];
+    }
+
+    /**
+     * Tracks a service logout event in the user's audit trail. Useful for apps
+     * which do not attach to the SSO and cannot use the standard logout endpoint.
+     *
+     * @param $userId integer ID of the user who logged out.
+     *
+     * @return array A 200 OK status indicates a successful audit log.
+     */
+    public function trackLogout($userId)
+    {
+        return $this->httpClient->post("/users/$userId/track-logout")['payload'];
     }
 
     /**
