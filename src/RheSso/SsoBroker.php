@@ -71,4 +71,29 @@ class SsoBroker extends Broker
 
         return $data;
     }
+
+    /**
+     * Log the client in at the SSO server.
+     *
+     * Only brokers marked trused can collect and send the user's credentials. Other brokers should omit $username and
+     * $password.
+     *
+     * @param string $username
+     * @param string $password
+     * @return array  user info
+     * @throws Exception if login fails eg due to incorrect credentials
+     */
+    public function login($username = null, $password = null)
+    {
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+        if (!isset($username) && isset($_POST['username'])) $username = $_POST['username'];
+        if (!isset($password) && isset($_POST['password'])) $password = $_POST['password'];
+
+        $result = $this->request('POST', 'login', compact('username', 'password', 'user_agent'));
+
+        $this->userinfo = $result;
+
+        return $this->userinfo;
+    }
 }
