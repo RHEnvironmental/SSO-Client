@@ -3,7 +3,7 @@
     "description": "Modules to support third party applications using the RHE SSO.",
     "keywords": ["rhe sso"],
     "type": "library",
-    "version": "1.6.0",
+    "version": "1.7.1",
     "authors": [
         {
             "name": "Adam Barrell",
