@@ -67,7 +67,7 @@ class SsoBroker extends Broker
             throw new NotAttachedException($data['error'] ?: $response, $httpCode);
         }
 
-        if ($httpCode >= 400) throw new SsoAuthException($data['error'] ?: $response, $data['data'] ?: null);
+        if ($httpCode >= 400) throw new SsoAuthException($data['error'] ?: $response, $data['data'] ?: []);
 
         return $data;
     }

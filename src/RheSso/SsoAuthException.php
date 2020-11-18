@@ -8,7 +8,7 @@ class SsoAuthException extends Exception
 {
     private $data;
 
-    public function __construct($message = null, $data)
+    public function __construct($message = null, $data = [])
     {
         parent::__construct($message, 0, null);
 
