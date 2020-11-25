@@ -8,6 +8,8 @@ use Jasny\SSO\NotAttachedException;
 
 class SsoBroker extends Broker
 {
+    private $useSecureCookies;
+
     /**
      * Constructs a new SSO broker used to authenticate with the RHE SSO server.
      *
@@ -15,10 +17,12 @@ class SsoBroker extends Broker
      * @param $brokerId string The identifier allows the SSO server to uniquely identify the broker application.
      * @param $brokerSecret string Secret used to authenticate a trusted broker with the SSO server.
      * @param $cookieLifetime integer Seconds until SSO session expires and user needs to re-authenticate.
+     * @param $useSecureCookies boolean Force cookie transmission over an HTTPS connection.
      */
-    public function __construct($ssoAuthUrl, $brokerId, $brokerSecret, $cookieLifetime = 86400)
+    public function __construct($ssoAuthUrl, $brokerId, $brokerSecret, $cookieLifetime = 86400, $useSecureCookies = false)
     {
         parent::__construct($ssoAuthUrl, $brokerId, $brokerSecret, $cookieLifetime);
+        $this->useSecureCookies = $useSecureCookies;
     }
 
     /**
@@ -31,8 +35,8 @@ class SsoBroker extends Broker
         $this->token = base_convert(md5(uniqid(rand(), true)), 16, 36);
 
         $cookieExpiry = time() + $this->cookie_lifetime;
-        setcookie($this->getCookieName(), $this->token, $cookieExpiry, '/', '', true, true);
-        setcookie("sso_attached", null, $cookieExpiry, '/', '', true, false);
+        setcookie($this->getCookieName(), $this->token, $cookieExpiry, '/', '', $this->useSecureCookies, true);
+        setcookie("sso_attached", null, $cookieExpiry, '/', '', $this->useSecureCookies, false);
     }
 
     /**
@@ -40,8 +44,8 @@ class SsoBroker extends Broker
      */
     public function clearToken()
     {
-        setcookie($this->getCookieName(), null, 1, '/', '', true, true);
-        setcookie("sso_attached", null, 1, '/', '', true, false);
+        setcookie($this->getCookieName(), null, 1, '/', '', $this->useSecureCookies, true);
+        setcookie("sso_attached", null, 1, '/', '', $this->useSecureCookies, false);
         $this->token = null;
     }
 
