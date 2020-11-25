@@ -36,7 +36,7 @@ class SsoBroker extends Broker
 
         $cookieExpiry = time() + $this->cookie_lifetime;
         setcookie($this->getCookieName(), $this->token, $cookieExpiry, '/', '', $this->useSecureCookies, true);
-        setcookie("sso_attached", null, $cookieExpiry, '/', '', $this->useSecureCookies, false);
+        setcookie("sso_attached", '1', $cookieExpiry, '/', '', $this->useSecureCookies, false);
     }
 
     /**
@@ -45,7 +45,7 @@ class SsoBroker extends Broker
     public function clearToken()
     {
         setcookie($this->getCookieName(), null, 1, '/', '', $this->useSecureCookies, true);
-        setcookie("sso_attached", null, 1, '/', '', $this->useSecureCookies, false);
+        setcookie("sso_attached", '0', 1, '/', '', $this->useSecureCookies, false);
         $this->token = null;
     }
 
