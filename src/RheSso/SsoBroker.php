@@ -22,6 +22,30 @@ class SsoBroker extends Broker
     }
 
     /**
+     * Generate session token
+     */
+    public function generateToken()
+    {
+        if (isset($this->token)) return;
+
+        $this->token = base_convert(md5(uniqid(rand(), true)), 16, 36);
+
+        $cookieExpiry = time() + $this->cookie_lifetime;
+        setcookie($this->getCookieName(), $this->token, $cookieExpiry, '/', '', true, true);
+        setcookie("sso_attached", null, $cookieExpiry, '/', '', true, false);
+    }
+
+    /**
+     * Clears session token
+     */
+    public function clearToken()
+    {
+        setcookie($this->getCookieName(), null, 1, '/', '', true, true);
+        setcookie("sso_attached", null, 1, '/', '', true, false);
+        $this->token = null;
+    }
+
+    /**
      * Execute on SSO server.
      *
      * @param string       $method  HTTP method: 'GET', 'POST', 'DELETE'
