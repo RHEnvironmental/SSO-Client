@@ -97,6 +97,7 @@ class HttpClient
         $endpoint = $this->baseApiEndpoint . $path;
 
         $options = array_merge_recursive([
+            'verify' => false,
             'headers' => [
                 'X-Broker-Id'     => $this->brokerId,
                 'X-Broker-Secret' => $this->brokerSecret
